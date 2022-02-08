@@ -20,7 +20,8 @@ static const char * const TAG = "EXAMPLE_NOT";
 
 #define BUTTON_I1 GPIO_NUM_26        // Pin 26.
 #define GPIO_Q1 GPIO_NUM_19            // Pin 19.
-
+#define BUTTON_I2 GPIO_NUM_32
+#define GPIO_Q3 GPIO_NUM_33
 
 
 
@@ -39,11 +40,16 @@ extern "C" void app_main(void)
        functions.)
     */
     gpio_reset_pin(GPIO_Q1);
+    gpio_reset_pin(GPIO_Q3);
     gpio_reset_pin(BUTTON_I1);
+    gpio_reset_pin(BUTTON_I2);
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(GPIO_Q1, GPIO_MODE_OUTPUT);
+    gpio_set_direction(GPIO_Q3, GPIO_MODE_OUTPUT)
     gpio_set_direction(BUTTON_I1, GPIO_MODE_INPUT);
-    gpio_set_level(GPIO_Q1, 0); //set to 0 at Reset.
+    gpio_set_direction(BUTTON_I2, GPIO_MODE_INPUT);
+    gpio_set_level(GPIO_Q1, 0);
+    gpio_set_level(GPIO_Q3, 0);//set to 0 at Reset.
 
 
 
@@ -53,13 +59,13 @@ extern "C" void app_main(void)
     {
         // Eingang lesen, das not wird gebraucht weil die Eingaenge bei losgelassenem Taster auf 3.3V sind, und der Taster auf GND schaltet.
         bool I1 = not gpio_get_level(BUTTON_I1);
-
+        bool I2 = not gpio_get_level(BUTTON_I2)
 
 
 
         // Ausgaenge setzen
-        gpio_set_level(GPIO_Q1, not I1); //Verwendung des NOT aus der IEC IEC 61131; auch in C++ vorhanden, in C nicht not 
-
+        gpio_set_level(GPIO_Q1, not I1); //Verwendung des NOT aus der IEC IEC 61131; auch in C++ vorhanden, in C nicht not
+        gpio_set_level(GPIO_Q3, I2);
         // 100ms warten  = Intervallzeit des Tasks
         vTaskDelay(100 / portTICK_PERIOD_MS); // 100ms cycle for Test.
     }

@@ -62,12 +62,12 @@ extern "C" void app_main(void)
         // Eingang lesen, das not wird gebraucht weil die Eingaenge bei losgelassenem Taster auf 3.3V sind, und der Taster auf GND schaltet.
         bool I1 = not gpio_get_level(BUTTON_I1);
         bool I2 = not gpio_get_level(BUTTON_I2);
-        bool I3 = gpio_get_level(BUTTON_I3);
+        bool I3 = not gpio_get_level(BUTTON_I3);
 
 
         // Ausgaenge setzen
         gpio_set_level(GPIO_Q1, I1 and I2 and I3); //Verwendung des AND aus der IEC IEC 61131; auch in C++ vorhanden, in C nicht not
-        gpio_set_level(GPIO_Q3, I1 and (I2 or I3));
+        gpio_set_level(GPIO_Q3, I3 and (I2 or I1));
         // 100ms warten  = Intervallzeit des Tasks
         vTaskDelay(100 / portTICK_PERIOD_MS); // 100ms cycle for Test.
     }
