@@ -67,7 +67,7 @@ extern "C" void app_main(void)
     THREE_POSITION_SWITCH SWITCH;
     THREE_POSITION_2TOF    TIMER;
     THREE_POSITION_VALVE     VALVE;
-    TIMER.PT_up = 3000;
+    TIMER.PT_up = 1000;
     TIMER.PT_down = 500;
 
 
