@@ -63,14 +63,17 @@ extern "C" void app_main(void)
     TOGGLE TOGGLE1;
     TOGGLE TOGGLE2;
     TOGGLE TOGGLE3;
+    TON TON1;
 
     while (true) // Endlos-Schleife
     {
         // Eingang lesen, das not wird gebraucht weil die Eingaenge bei losgelassenem Taster auf 3.3V sind, und der Taster auf GND schaltet.
-        bool I1 = not gpio_get_level(BUTTON_I1);
+    	bool I1 = not gpio_get_level(BUTTON_I1);
         bool I2 = not gpio_get_level(BUTTON_I2);
         bool I3 = not gpio_get_level(BUTTON_I3);
 
+
+        TON1(I1);
 
         TOGGLE1.RST = I3;
         TOGGLE1(I1);
@@ -80,6 +83,9 @@ extern "C" void app_main(void)
 
         TOGGLE3.RST = I3;
         TOGGLE3(I1 and I2);
+
+
+
 
 
         // Ausgaenge setzen
