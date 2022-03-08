@@ -26,7 +26,10 @@ static const char * const TAG = "EXAMPLE_TON";
 
 #define BUTTON_I1 GPIO_NUM_26        // Pin 26.
 #define BUTTON_I2 GPIO_NUM_32
-#define GPIO_Q1 GPIO_NUM_19            // Pin 19.
+#define BUTTON_I3 GPIO_NUM_39        // Pin 39.
+#define GPIO_Q1 GPIO_NUM_19
+#define GPIO_Q2 GPIO_NUM_23
+// Pin 19.
 
 
 
@@ -45,39 +48,56 @@ extern "C" void app_main(void)
        functions.)
     */
     gpio_reset_pin(GPIO_Q1);
+    gpio_reset_pin(GPIO_Q2);
     gpio_reset_pin(BUTTON_I1);
     gpio_reset_pin(BUTTON_I2);
+    gpio_reset_pin(BUTTON_I3);
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(GPIO_Q1, GPIO_MODE_OUTPUT);
+    gpio_set_direction(GPIO_Q2, GPIO_MODE_OUTPUT);
     gpio_set_direction(BUTTON_I1, GPIO_MODE_INPUT);
     gpio_set_direction(BUTTON_I2, GPIO_MODE_INPUT);
+    gpio_set_direction(BUTTON_I3, GPIO_MODE_INPUT);
     gpio_set_level(GPIO_Q1, 0); //set to 0 at Reset.
+    gpio_set_level(GPIO_Q2, 0); //set to 0 at Reset.
 
 
     TON TON1;
     TON1.PT = 1000;
 
+    TON TON2;
+    TON2.PT = 3000;
+
+
     R_TRIG R_TRIG1;
 
+    R_TRIG R_TRIG2;
+
     RS RS1;
+
+    RS RS2;
 
     while (true) // Endlos-Schleife
     {
         // Eingang lesen, das not wird gebraucht weil die Eingaenge bei losgelassenem Taster auf 3.3V sind, und der Taster auf GND schaltet.
         bool I1 = not gpio_get_level(BUTTON_I1);
         bool I2 = not gpio_get_level(BUTTON_I2);
+        bool I3 = not gpio_get_level(BUTTON_I3);
 
         TON1(I1);
+        TON2(I1);
 
         R_TRIG1(I2);
+        R_TRIG2(I3);
 
         RS1 (TON1.Q, R_TRIG1.Q);
-
+        RS2 (TON2.Q, R_TRIG2.Q);
         // den I1 an TON1 uebergeben, und TON1 aufrufen
 
 
         // Ausgaenge setzen
         gpio_set_level(GPIO_Q1, RS1.Q1);
+        gpio_set_level(GPIO_Q2, RS2.Q1);
 
         // 100ms warten  = Intervallzeit des Tasks
         vTaskDelay(100 / portTICK_PERIOD_MS); // 100ms cycle for Test.
