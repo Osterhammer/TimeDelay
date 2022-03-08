@@ -69,7 +69,7 @@ extern "C" void app_main(void)
 
         TON1(I1);
 
-        R_TRIG1(I2);
+        R_TRIG1(I1);
 
         RS1 (TON1.Q, R_TRIG1.Q);
 
